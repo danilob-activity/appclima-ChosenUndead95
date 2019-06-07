@@ -1,5 +1,7 @@
 package com.londonappbrewery.climapm;
 
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
@@ -19,6 +21,16 @@ public class WeatherController extends AppCompatActivity {
     final float MIN_DISTANCE = 1000;
 
     // TODO: Set LOCATION_PROVIDER here:
+
+    // No corpo da classe
+// TODO: Set LOCATION_PROVIDER here:
+    String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;
+    // pela rede de dados LocationManager.NETWORK_PROVIDER
+// Tag de debug
+    final String LOGCAT_TAG = "Clima";
+
+    LocationManager mLocationManager;
+    LocationListener mLocationListener;
 
 
 

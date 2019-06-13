@@ -15,6 +15,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+
 
 public class WeatherController extends AppCompatActivity {
 
@@ -22,7 +30,7 @@ public class WeatherController extends AppCompatActivity {
     // Constants:
     final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
     // App ID to use OpenWeather data
-    final String APP_ID = "e72____PLEASE_REPLACE_ME_____13";
+    final String APP_ID = "08c06f805926d424322862caf5f64232";
     // Time between location updates (5000 milliseconds or 5 seconds)
     final long MIN_TIME = 5000;
     // Distance between location updates (1000m or 1km)
@@ -53,6 +61,12 @@ public class WeatherController extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_controller_layout);
+
+        final int REQUEST_CODE = 123;
+        final String WEATHER_URL =
+                "http://api.openweathermap.org/data/2.5/weather";
+        // App ID para usar o OpenWeather data
+        final String APP_ID = "<api id>";
 
         // Linking the elements in the layout to Java code
         mCityLabel = (TextView) findViewById(R.id.locationTV);
@@ -124,6 +138,53 @@ public class WeatherController extends AppCompatActivity {
         }
         mLocationManager.requestLocationUpdates(LOCATION_PROVIDER, MIN_TIME,MIN_DISTANCE, mLocationListener);
 
+        mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.d("Clima", "onLocationChanged() callback received");
+                String longitude = String.valueOf(location.getLongitude());
+                String latitude = String.valueOf(location.getLatitude());
+                RequestParams params = new RequestParams();
+                params.put("lat",latitude);
+                params.put("lon", longitude);
+                params.put("appid",APP_ID);
+                letsDoSomeNetworking(params);
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
+
+    }
+
+    private void letsDoSomeNetworking(RequestParams params) {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get( WEATHER_URL,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess( int statusCode, Header[] headers,
+                                   JSONObject response) {
+                Log. d(LOGCAT_TAG,"Sucess! JSON: "+response.toString());
+            }
+            @Override
+            public void onFailure( int statusCode, Header[] headers, Throwable
+                    throwable, JSONObject errorResponse) {
+                Log. e(LOGCAT_TAG,"Fail "+throwable.toString());
+                Log. d(LOGCAT_TAG,"Status code "+ statusCode);
+            }
+        });
     }
 
     @Override

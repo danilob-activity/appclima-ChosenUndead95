@@ -96,6 +96,20 @@ public class WeatherController extends AppCompatActivity {
         super.onResume();
         Log.d(LOGCAT_TAG, "onResume() called");
         getWeatherForCurrentLocation();
+
+        super.onResume();
+        Log.d(LOGCAT_TAG, "onResume() called");
+        Intent myIntent = getIntent();
+        String city = myIntent.getStringExtra( "City");
+        if(city!=null){
+            getWeatherForNewCity(city);
+        }else{
+            Log.d(LOGCAT_TAG,"Getting weather for current location");
+            getWeatherForCurrentLocation();
+        }
+    }
+
+    private void getWeatherForNewCity(String city) {
     }
 
 

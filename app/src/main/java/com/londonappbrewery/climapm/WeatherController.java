@@ -95,10 +95,6 @@ public class WeatherController extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(LOGCAT_TAG, "onResume() called");
-        getWeatherForCurrentLocation();
-
-        super.onResume();
-        Log.d(LOGCAT_TAG, "onResume() called");
         Intent myIntent = getIntent();
         String city = myIntent.getStringExtra( "City");
         if(city!=null){
@@ -109,11 +105,16 @@ public class WeatherController extends AppCompatActivity {
         }
     }
 
-    private void getWeatherForNewCity(String city) {
-    }
 
 
     // TODO: Add getWeatherForNewCity(String city) here:
+
+    private void getWeatherForNewCity(String city) {
+        RequestParams params = new RequestParams();
+        params.put("q",city);
+        params.put("appid", APP_ID);
+        letsDoSomeNetworking(params);
+    }
 
 
     // TODO: Add getWeatherForCurrentLocation() here:
